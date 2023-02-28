@@ -1,8 +1,9 @@
 #include <pic32mx.h>
 #include "projcode.h"
 #include <stdint.h>
+#include <math.h>
 
-struct Agent agent1;
+struct Enemy enemy1;
 
 void gameLoopEndless (void) {
     setupGame();
@@ -11,16 +12,27 @@ void gameLoopEndless (void) {
     {
         toDisplay[i] = 0;
     }
+    int j, k;
+    for (j = 0; j < 128; j++)
+    {
+        for (k = 0; k < 32; k++)
+        {
+            trailmap[j][k] = 0;
+        }
+        
+    }
+    
+
     display_update();
     calculateNextOn == 1;
-    int j;
-    initAgent(&agent1);
-    drawAgent(&agent1);
+    initEnemy(&enemy1);
+            drawEnemy(&enemy1);
+
 
 
     while(gameState == ENDLESSMODE) {
         updateEndless();
-     }
+    }
     return;
 }
 
@@ -28,8 +40,8 @@ void gameLoopEndless (void) {
 void updateEndless() {
     if (calculateNextOn == 1)
     {
-        updateAgent(&agent1);
-        drawAgent(&agent1);
+        updateEnemy(&enemy1);
+        drawEnemy(&enemy1);
         toDisplay[0]++;
         calculateNextOn = 0;
     }

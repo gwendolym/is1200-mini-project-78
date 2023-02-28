@@ -29,7 +29,7 @@
 //     double y;
 // } Point2D;
 
-// struct Agent {
+// struct Enemy {
 //     Point2D positionDouble;
 //     Point positionInt;
 //     double angle;
@@ -44,18 +44,18 @@
 //     // double senseRight;
 // };
 
-void initAgent(struct Agent *agent) {
-    agent->positionDouble.x = CELL_WIDTH / 2 + ((double)randomInt(0, 10000) / 10000 - 0.5) * CELL_WIDTH / 1.5;
-    agent->positionDouble.y = CELL_HEIGHT / 2 + ((double)randomInt(0, 10000) / 10000 - 0.5) * CELL_HEIGHT / 1.5;
-    agent->positionInt.x = (int)agent->positionDouble.x;
-    agent->positionInt.y = (int)agent->positionDouble.y;
-    agent->angle = (double)randomInt(0, 1000) / 1000 * 2 * PI;
-    agent->trailmap[agent->positionInt.x][agent->positionInt.y] = 1;
+void initEnemy(struct Enemy *enemy) {
+    enemy->positionDouble.x = CELL_WIDTH / 2 + (randomDouble(TMR2+1) - 0.5) * CELL_WIDTH / 1.5;
+    enemy->positionDouble.y = CELL_HEIGHT / 2 + (randomDouble(TMR2+1) - 0.5) * CELL_HEIGHT / 1.5;
+    enemy->positionInt.x = (int)enemy->positionDouble.x;
+    enemy->positionInt.y = (int)enemy->positionDouble.y;
+    enemy->angle = (double) randomDouble(TMR2+1) * 2 * PI;
+    trailmap[enemy->positionInt.x][enemy->positionInt.y] = 1;
 }
 
-// double sense(struct Agent *agent, double sensorAngleInput);
+// double sense(struct enemy *enemy, double sensorAngleInput);
 
-void updateAgent(struct Agent *agent) {
+void updateEnemy(struct Enemy *enemy) {
 
     // Steering
     // double senseForward, senseLeft, senseRight;
@@ -65,47 +65,47 @@ void updateAgent(struct Agent *agent) {
 
     // double randomSteerStrength = (double)rand() / RAND_MAX;
     // if (senseForward > senseLeft && senseForward > senseRight) {
-    //     agent->angle += 0;
+    //     enemy->angle += 0;
     // } else if (senseRight > senseLeft) {
-    //     agent->angle -= randomSteerStrength * 1.5 * TURN_SPEED ;
+    //     enemy->angle -= randomSteerStrength * 1.5 * TURN_SPEED ;
     // } else if (senseLeft > senseRight) {
-    //     agent->angle += randomSteerStrength * 1.5 * TURN_SPEED;
+    //     enemy->angle += randomSteerStrength * 1.5 * TURN_SPEED;
     // } else {
-    //     agent->angle += (randomSteerStrength - 0.5) * TURN_SPEED;
+    //     enemy->angle += (randomSteerStrength - 0.5) * TURN_SPEED;
     // }
 
-    Point2D direction = {cos(agent->angle), sin(agent->angle)};
-    Point2D newpos = {agent->positionDouble.x + direction.x * MOVE_SPEED , agent->positionDouble.y + direction.y * MOVE_SPEED};
+    Point2D direction = {cos(enemy->angle), sin(enemy->angle)};
+    Point2D newpos = {enemy->positionDouble.x + direction.x * MOVE_SPEED , enemy->positionDouble.y + direction.y * MOVE_SPEED};
     
     // Wall Checks
-    // if (newpos.x < 0 || newpos.y < 0) {
-    //     newpos.x = max(0, newpos.x);
-    //     newpos.y = max(0, newpos.y);
-    //     agent->angle = (double)rand() / RAND_MAX * 2 * M_PI;
-    // }
+    if (newpos.x < 0 || newpos.y < 0) {
+        newpos.x = max(0, newpos.x);
+        newpos.y = max(0, newpos.y);
+        enemy->angle = randomDouble(TMR2+1) * 2 * PI;
+    }
 
-    // if (newpos.x >= CELL_WIDTH || newpos.y >= CELL_HEIGHT) {
-    //     newpos.x = min(newpos.x, CELL_WIDTH - 1);
-    //     newpos.y = min(newpos.y, CELL_HEIGHT - 1);
-    //     agent->angle = (double)rand() / RAND_MAX * 2 * M_PI;
-    // }
+    if (newpos.x >= CELL_WIDTH || newpos.y >= CELL_HEIGHT) {
+        newpos.x = min(newpos.x, CELL_WIDTH - 1);
+        newpos.y = min(newpos.y, CELL_HEIGHT - 1);
+        enemy->angle = randomDouble(TMR2+1) * 2 * PI;
+    }
 
     // Add new position and trail
-    agent->positionDouble = newpos;
-    agent->positionInt.x = (int) agent->positionDouble.x;
-    agent->positionInt.y = (int) agent->positionDouble.y;
-    agent->trailmap[agent->positionInt.x][agent->positionInt.y] = 1;
+    enemy->positionDouble = newpos;
+    enemy->positionInt.x = (int) enemy->positionDouble.x;
+    enemy->positionInt.y = (int) enemy->positionDouble.y;
+    trailmap[enemy->positionInt.x][enemy->positionInt.y] = 1;
 }
 
-// double sense (Agent* agent, double sensorAngleInput) {
-//     double sensorAngle = agent->angle + sensorAngleInput;
+// double sense (enemy* enemy, double sensorAngleInput) {
+//     double sensorAngle = enemy->angle + sensorAngleInput;
 //     Point2D sensorDirection;
 //     sensorDirection.x = cos(sensorAngle);
 //     sensorDirection.y = sin(sensorAngle);
 
 //     Point2D sensorCenterDouble;
-//     sensorCenterDouble.x = agent->positionDouble.x + sensorDirection.x * SENSOR_OFFSET_DST;
-//     sensorCenterDouble.y = agent->positionDouble.y + sensorDirection.y * SENSOR_OFFSET_DST;
+//     sensorCenterDouble.x = enemy->positionDouble.x + sensorDirection.x * SENSOR_OFFSET_DST;
+//     sensorCenterDouble.y = enemy->positionDouble.y + sensorDirection.y * SENSOR_OFFSET_DST;
 //     Point sensorCenterInt;
 //     sensorCenterInt.x = (int) sensorCenterDouble.x;
 //     sensorCenterInt.y = (int) sensorCenterDouble.y;
@@ -125,8 +125,16 @@ void updateAgent(struct Agent *agent) {
 //     return sum;
 // }
 
-void drawAgent(struct Agent *agent) {
-    int posX = agent->positionInt.x;
-    int posY = agent->positionInt.y;
-    toDisplay[(posY / 8) * 128 + (posX % 128)] = (1 << (posY % 8));
+void drawEnemy(struct Enemy *enemy) {
+    int xPos = enemy->positionInt.x;
+    int yPos = enemy->positionInt.y;
+    int i;
+    for (i = 0; i < 512; i++)
+    {
+        toDisplay[(yPos / 8) * 128 + (xPos % 128)] |= (1 << (yPos % 8));
+    }
+    
+
+    
+
 }

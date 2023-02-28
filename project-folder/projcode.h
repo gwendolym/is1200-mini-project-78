@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <pic32mx.h>
-
+#include <math.h>
 
 
 #define GAMESTART (0)
@@ -39,6 +39,8 @@ void modeSelect(void);
 void updateEndless();
 volatile int calculateNextOn;
 uint8_t toDisplay[512];
+uint8_t trailmap[128][32];
+
 
 
 #define CELL_WIDTH 128
@@ -48,7 +50,7 @@ uint8_t toDisplay[512];
 #define SENSOR_SIZE 2
 #define SENSOR_ANGLE_OFFSET 0.4
 #define SENSOR_OFFSET_DST 1
-#define AGENT_NUMBER 1
+#define ENEMY_NUMBER 1
 typedef struct Point {
     int x;
     int y;
@@ -59,7 +61,7 @@ typedef struct Point2D {
     double y;
 } Point2D;
 
-struct Agent {
+struct Enemy {
     Point2D positionDouble;
     Point positionInt;
     double angle;
@@ -75,10 +77,29 @@ struct Agent {
     // double senseRight;
 };
 
-void initAgent(struct Agent *agent);
-void drawAgent(struct Agent *agent);
-void updateAgent(struct Agent *agent);
+void initEnemy(struct Enemy *enemy);
+void drawEnemy(struct Enemy *enemy);
+void updateEnemy(struct Enemy *enemy);
 
-int randomInt (int seed, int max);
+int randomInt ();
 double sin(double x);
 double cos(double x);
+
+#define UP 1
+#define RIGHT 2
+#define DOWN 3
+#define LEFT 4
+
+struct Player {
+    Point positionInt;
+    int Direction;
+
+};
+void drawPlayer(struct Player *player);
+void initPlayerNormal(struct Player *player);
+void updatePlayerNormal(struct Player *player);
+void initPlayerEndless(struct Player *player);
+void updatePlayerEndless(struct Player *player);
+double randomDouble (int n);
+double min(double a, double b);
+double max (double a, double b);
