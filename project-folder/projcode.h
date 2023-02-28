@@ -7,7 +7,24 @@
 #define MODESELECT (1)
 #define NORMALGAME (2)
 #define ENDLESSMODE (3)
-#define GAMEEND (4)
+#define GAMEENDEND (4)
+#define GAMEENDNORM (5)
+#define HIGHSCOREEND (6)
+#define HIGHSCORENORM (7)
+
+
+#define DISPLAY_CHANGE_TO_COMMAND_MODE (PORTFCLR = 0x10)
+#define DISPLAY_CHANGE_TO_DATA_MODE (PORTFSET = 0x10)
+
+#define DISPLAY_ACTIVATE_RESET (PORTGCLR = 0x200)
+#define DISPLAY_DO_NOT_RESET (PORTGSET = 0x200)
+
+#define DISPLAY_ACTIVATE_VDD (PORTFCLR = 0x40)
+#define DISPLAY_ACTIVATE_VBAT (PORTFCLR = 0x20)
+
+#define DISPLAY_TURN_OFF_VDD (PORTFSET = 0x40)
+#define DISPLAY_TURN_OFF_VBAT (PORTFSET = 0x20)
+
 #define PI 3.14159265359
 
 
@@ -19,6 +36,7 @@ void update ();
 
 void setupGame();
 
+extern const uint8_t const font[128*8];
 
 void user_isr(void);
 
@@ -34,7 +52,11 @@ int *pGameState;
 void runGame(void);
 void gameLoopNorm(void);
 void gameLoopEndless(void);
-void gameEnd();
+void gameEndEndless();
+void gameEndNorm();
+void highScoreEnd();
+void highScoreNorm();
+
 void modeSelect(void);
 void updateEndless();
 void updateNormal();
@@ -56,6 +78,11 @@ void randomTimer();
 #define ENEMY_NUMBER 5
 #define DIFFUSE_SPEED 0.75
 #define EVAPORATE_SPEED 2
+
+typedef struct Highscore {
+    char name[3];
+    int score;
+} Highscore;
 
 typedef struct Point {
     int x;
@@ -115,3 +142,10 @@ double lerp (double a, double b, double f);
 void processTrailMap();
 void clearDisplay();
 void tick( unsigned int * timep );
+void time2string( char *, int );
+int mytime;
+
+
+void display_string(int line, char *s);
+void display_update_text(void);
+Highscore highscores[3];

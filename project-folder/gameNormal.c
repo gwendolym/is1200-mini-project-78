@@ -8,7 +8,7 @@
 // #include <math.h>
 
 struct Enemy enemy1;
-struct Enemy enemies[1];
+struct Enemy enemies[5];
 struct Player player;
 
 // uint8_t evaporateSpeed = 64;
@@ -36,7 +36,7 @@ void gameLoopNorm (void) {
     calculateNextOn == 1;
     // initEnemy(&enemy1);
     drawEnemy();
-    for (l = 0; l < 1; l++)
+    for (l = 0; l < 5; l++)
     {
        initEnemy(&(enemies[l]));
     }
@@ -55,7 +55,7 @@ void updateNormal() {
     {
         evaporateSpeed = 4;
         int i;
-        for (i = 0; i < 1; i++)
+        for (i = 0; i < 5; i++)
         {
             updateEnemy(&(enemies[i]));
         }

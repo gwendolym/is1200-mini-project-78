@@ -8,8 +8,8 @@
 
 
 void initPlayerNormal(struct Player *player){
-    player->positionInt.x = 32;
-    player->positionInt.y = 20;
+    player->positionInt.x = 15;
+    player->positionInt.y = 15;
     player->direction.x = 0;
     player->direction.y = 0;
 
@@ -36,13 +36,37 @@ void updatePlayerNormal(struct Player *player){
     
         player->direction.x = 0;
         player->direction.y = 0;
+    
+    
+    int xPos = player->positionInt.x;
+    int yPos = player->positionInt.y;
+
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDNORM;
+    }
+    xPos++;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDNORM;
+    }
+    yPos++;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDNORM;
+    }
+    xPos--;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDNORM;
+    }
 
     
 }
 
 void initPlayerEndless(struct Player *player) {
-    player->positionInt.x = 32;
-    player->positionInt.y = 20;
+    player->positionInt.x = 15;
+    player->positionInt.y = 15;
     player->direction.x=RIGHT;
     player->direction.y=0;
 }
@@ -102,9 +126,34 @@ void updatePlayerEndless(struct Player *player){
         player->positionInt.x=player->positionInt.x-1;
     
     if ((posXbegin == player->positionInt.x) && (posYbegin == player->positionInt.y))
-        gameState = GAMEEND;
+        gameState = GAMEENDEND;
     
     
+    int xPos = player->positionInt.x;
+    int yPos = player->positionInt.y;
+
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    xPos++;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    yPos++;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    xPos--;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    
+    
+
 
 }
 

@@ -45,7 +45,7 @@
 // };
 
 void initEnemy(struct Enemy *enemy) {
-    enemy->positionDouble.x = CELL_WIDTH / 2 + (randomDouble(TMR1+1) - 0.5) * CELL_WIDTH / 1.5;
+    enemy->positionDouble.x = 79 + (randomDouble(TMR1+1) - 0.5) * 48;
     enemy->positionDouble.y = CELL_HEIGHT / 2 + (randomDouble(TMR1+1) - 0.5) * CELL_HEIGHT / 1.5;
     enemy->positionInt.x = (int)enemy->positionDouble.x;
     enemy->positionInt.y = (int)enemy->positionDouble.y;
