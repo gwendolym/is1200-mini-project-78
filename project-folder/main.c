@@ -51,7 +51,7 @@ int main (void) {
 	gameState = 0;
 	TRISD = TRISD | (0xfe0);
 	TRISF = TRISF | 2;
-
+	randomTimer();
 	while (1) {
 		runGame();
     }

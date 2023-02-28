@@ -37,22 +37,25 @@ void gameLoopEndless(void);
 void gameEnd();
 void modeSelect(void);
 void updateEndless();
+void updateNormal();
 volatile int calculateNextOn;
 uint8_t toDisplay[512];
 uint8_t trailmap[128][32];
+uint8_t evaporateSpeed;
 
+void randomTimer();
 
 
 #define CELL_WIDTH 128
 #define CELL_HEIGHT 32
 #define MOVE_SPEED 1
-#define TURN_SPEED 0.05
-#define SENSOR_SIZE 2
+#define TURN_SPEED 0.25
+#define SENSOR_SIZE 4
 #define SENSOR_ANGLE_OFFSET 0.4
 #define SENSOR_OFFSET_DST 1
-#define ENEMY_NUMBER 1
+#define ENEMY_NUMBER 5
 #define DIFFUSE_SPEED 0.75
-#define EVAPORATE_SPEED 10
+#define EVAPORATE_SPEED 2
 
 typedef struct Point {
     int x;
@@ -68,15 +71,15 @@ struct Enemy {
     Point2D positionDouble;
     Point positionInt;
     double angle;
-    // Point sensorForward;
-    // Point sensorLeft;
-    // Point sensorRight;
-    // double sensorpointsForward[SENSOR_SIZE*2+1][2];
-    // double sensorpointsRight[SENSOR_SIZE*2+1][2];
-    // double sensorpointsLeft[SENSOR_SIZE*2+1][2];
-    // double senseForward;
-    // double senseLeft;
-    // double senseRight;
+    Point sensorForward;
+    Point sensorLeft;
+    Point sensorRight;
+    double sensorpointsForward[SENSOR_SIZE*2+1][2];
+    double sensorpointsRight[SENSOR_SIZE*2+1][2];
+    double sensorpointsLeft[SENSOR_SIZE*2+1][2];
+    double senseForward;
+    double senseLeft;
+    double senseRight;
 };
 
 void initEnemy(struct Enemy *enemy);

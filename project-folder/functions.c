@@ -182,14 +182,7 @@ void runGame() {
 
 
 
-void gameLoopNorm () {
-    int i = 0;
-    for (i = 0; i < 512; i++)
-    {
-        toDisplay[i] = 4;
-    }
-    display_update();
-}
+
 // void gameLoopEndless () {
 //         int i = 0;
 //     for (i = 0; i < 512; i++)
@@ -210,6 +203,12 @@ void user_isr( void )
         calculateNextOn = 1;
     }
     
+    if (((IFS(0) & 0x100) != 0 ) & (gameState == NORMALGAME)) {
+        IFSCLR(0) = 0x100;
+        while (calculateNextOn);
+        display_update();
+        calculateNextOn = 1;
+    }
 
 }
 
@@ -320,3 +319,10 @@ double lerp (double a, double b, double f) {
     return a * (1.0 - f) + (b * f);
 }
 
+void randomTimer() {
+    // Timer used for random number generator
+    T1CON = 0x30; //0011 0000. (111) means prescale 256
+    TMR1 = 0; //start at 0
+    PR2 = ((80000000/256)/10);  //prescale to 256 
+    T1CONSET = 0x8000; //start timer igore all other bits 1000 0000 0000 0000
+}

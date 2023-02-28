@@ -4,6 +4,8 @@
 #include <math.h>
 
 struct Enemy enemy1;
+struct Enemy enemies[10];
+uint8_t evaporateSpeed = 64;
 
 void gameLoopEndless (void) {
     setupGame();
@@ -21,12 +23,17 @@ void gameLoopEndless (void) {
         }
         
     }
+    int l;
     
 
     display_update();
     calculateNextOn == 1;
-    initEnemy(&enemy1);
+    // initEnemy(&enemy1);
     drawEnemy();
+    for (l = 0; l < 10; l++)
+    {
+       initEnemy(&(enemies[l]));
+    }
 
 
 
@@ -35,12 +42,23 @@ void gameLoopEndless (void) {
     }
     return;
 }
-
+int timer;
 
 void updateEndless() {
     if (calculateNextOn == 1)
     {
-        updateEnemy(&enemy1);
+        timer++;
+        if (timer%10 == 0 && evaporateSpeed >= 2) {
+            evaporateSpeed /=1.001;
+        }
+        
+        int i;
+        for (i = 0; i < 10; i++)
+        {
+            updateEnemy(&(enemies[i]));
+        }
+        
+        // updateEnemy(&enemy1);
         drawEnemy();
         // toDisplay[0]++;
         calculateNextOn = 0;
