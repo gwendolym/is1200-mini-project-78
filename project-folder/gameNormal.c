@@ -9,6 +9,8 @@
 
 struct Enemy enemy1;
 struct Enemy enemies[1];
+struct Player player;
+
 // uint8_t evaporateSpeed = 64;
 
 void gameLoopNorm (void) {
@@ -38,6 +40,7 @@ void gameLoopNorm (void) {
     {
        initEnemy(&(enemies[l]));
     }
+    initPlayerNormal(&player);
 
 
 
@@ -56,9 +59,11 @@ void updateNormal() {
         {
             updateEnemy(&(enemies[i]));
         }
+        updatePlayerNormal(&player);
         
         // updateEnemy(&enemy1);
         drawEnemy();
+        drawPlayer(&player);
         // toDisplay[0]++;
         calculateNextOn = 0;
     }

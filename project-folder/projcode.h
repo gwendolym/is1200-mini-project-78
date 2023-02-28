@@ -97,7 +97,8 @@ double cos(double x);
 
 struct Player {
     Point positionInt;
-    int Direction;
+    Point direction;
+    
 };
 void drawPlayer(struct Player *player);
 void initPlayerNormal(struct Player *player);
@@ -113,3 +114,4 @@ uint8_t iMax (uint8_t a, uint8_t b);
 double lerp (double a, double b, double f);
 void processTrailMap();
 void clearDisplay();
+void tick( unsigned int * timep );

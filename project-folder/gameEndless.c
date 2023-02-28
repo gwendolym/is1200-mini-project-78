@@ -6,6 +6,7 @@
 struct Enemy enemy1;
 struct Enemy enemies[10];
 uint8_t evaporateSpeed = 64;
+struct Player player;
 
 void gameLoopEndless (void) {
     setupGame();
@@ -34,6 +35,7 @@ void gameLoopEndless (void) {
     {
        initEnemy(&(enemies[l]));
     }
+    initPlayerEndless(&player);
 
 
 
@@ -57,9 +59,11 @@ void updateEndless() {
         {
             updateEnemy(&(enemies[i]));
         }
-        
+        updatePlayerEndless(&player);
+
         // updateEnemy(&enemy1);
         drawEnemy();
+        drawPlayer(&player);
         // toDisplay[0]++;
         calculateNextOn = 0;
     }
