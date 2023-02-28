@@ -26,7 +26,7 @@ void gameLoopEndless (void) {
     display_update();
     calculateNextOn == 1;
     initEnemy(&enemy1);
-            drawEnemy(&enemy1);
+    drawEnemy();
 
 
 
@@ -41,10 +41,18 @@ void updateEndless() {
     if (calculateNextOn == 1)
     {
         updateEnemy(&enemy1);
-        drawEnemy(&enemy1);
-        toDisplay[0]++;
+        drawEnemy();
+        // toDisplay[0]++;
         calculateNextOn = 0;
     }
     
     return;
+}
+
+void clearDisplay() {
+    int i = 0;
+    for (i = 0; i < 512; i++)
+    {
+        toDisplay[i] = 0;
+    }
 }

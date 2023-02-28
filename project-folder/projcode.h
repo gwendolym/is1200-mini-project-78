@@ -51,6 +51,9 @@ uint8_t trailmap[128][32];
 #define SENSOR_ANGLE_OFFSET 0.4
 #define SENSOR_OFFSET_DST 1
 #define ENEMY_NUMBER 1
+#define DIFFUSE_SPEED 0.75
+#define EVAPORATE_SPEED 10
+
 typedef struct Point {
     int x;
     int y;
@@ -65,7 +68,6 @@ struct Enemy {
     Point2D positionDouble;
     Point positionInt;
     double angle;
-    uint8_t trailmap[CELL_WIDTH][CELL_HEIGHT];
     // Point sensorForward;
     // Point sensorLeft;
     // Point sensorRight;
@@ -78,7 +80,7 @@ struct Enemy {
 };
 
 void initEnemy(struct Enemy *enemy);
-void drawEnemy(struct Enemy *enemy);
+void drawEnemy();
 void updateEnemy(struct Enemy *enemy);
 
 int randomInt ();
@@ -93,7 +95,6 @@ double cos(double x);
 struct Player {
     Point positionInt;
     int Direction;
-
 };
 void drawPlayer(struct Player *player);
 void initPlayerNormal(struct Player *player);
@@ -103,3 +104,9 @@ void updatePlayerEndless(struct Player *player);
 double randomDouble (int n);
 double min(double a, double b);
 double max (double a, double b);
+
+uint8_t iMin(uint8_t a, uint8_t b);
+uint8_t iMax (uint8_t a, uint8_t b);
+double lerp (double a, double b, double f);
+void processTrailMap();
+void clearDisplay();

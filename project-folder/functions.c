@@ -114,7 +114,7 @@ void setupGame() {
     IEC(0) = 0x100;
     
     T2CONSET = 0x8000; //start timer igore all other bits 1000 0000 0000 0000
-    
+
     enable_interrupt();
 }
 int timeout = 0;
@@ -300,3 +300,23 @@ double max (double a, double b) {
     }
     return b;
 }
+
+// uint8_t iMin(uint8_t a, uint8_t b) {
+//     if (a<b)
+//     {
+//         return a;
+//     }
+//     return b;
+// }
+// uint8_t iMax (uint8_t a, uint8_t b) {
+//     if (a>b)
+//     {
+//         return a;
+//     }
+//     return b;
+// }
+    
+double lerp (double a, double b, double f) {
+    return a * (1.0 - f) + (b * f);
+}
+

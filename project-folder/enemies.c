@@ -50,7 +50,7 @@ void initEnemy(struct Enemy *enemy) {
     enemy->positionInt.x = (int)enemy->positionDouble.x;
     enemy->positionInt.y = (int)enemy->positionDouble.y;
     enemy->angle = (double) randomDouble(TMR2+1) * 2 * PI;
-    trailmap[enemy->positionInt.x][enemy->positionInt.y] = 1;
+    trailmap[enemy->positionInt.x][enemy->positionInt.y] = 127;
 }
 
 // double sense(struct enemy *enemy, double sensorAngleInput);
@@ -94,7 +94,7 @@ void updateEnemy(struct Enemy *enemy) {
     enemy->positionDouble = newpos;
     enemy->positionInt.x = (int) enemy->positionDouble.x;
     enemy->positionInt.y = (int) enemy->positionDouble.y;
-    trailmap[enemy->positionInt.x][enemy->positionInt.y] = 1;
+    trailmap[enemy->positionInt.x][enemy->positionInt.y] = 127;
 }
 
 // double sense (enemy* enemy, double sensorAngleInput) {
@@ -125,16 +125,49 @@ void updateEnemy(struct Enemy *enemy) {
 //     return sum;
 // }
 
-void drawEnemy(struct Enemy *enemy) {
-    int xPos = enemy->positionInt.x;
-    int yPos = enemy->positionInt.y;
-    int i;
-    for (i = 0; i < 512; i++)
-    {
-        toDisplay[(yPos / 8) * 128 + (xPos % 128)] |= (1 << (yPos % 8));
-    }
-    
+void drawEnemy() {
 
-    
+    // for (i = 0; i < 512; i++)
+    // {
+    //     toDisplay[(yPos / 8) * 128 + (xPos % 128)] |= (1 << (yPos % 8));
+    // }
+    int i, j, offsetX, offsetY, sampleX, sampleY;
+    float originalValue, sum, blurResult, diffusedValue, diffuseAndEvaporatedValue;
+    clearDisplay();
 
+    for (i = 0; i < 128; i++) {
+        for (j = 0; j < 32; j++) {
+            
+                originalValue = trailmap[i][j];
+    //         sum = 0;
+
+    //         for (offsetX = -1; offsetX <= 1; offsetX++) {
+    //             for (offsetY = -1; offsetY <= 1; offsetY++) {
+    //                 sampleX = i + offsetX;
+    //                 sampleY = j + offsetY;
+
+    //                 if (sampleX >= 0 && sampleX < CELL_WIDTH && sampleY >= 0 && sampleY < CELL_HEIGHT) {
+    //                     sum += trailmap[sampleX][sampleY];
+    //                 }
+    //             }
+    //         }
+
+            // blurResult = sum / 9;
+            // diffusedValue = lerp(originalValue, blurResult, DIFFUSE_SPEED);
+                diffuseAndEvaporatedValue = max(0, originalValue - EVAPORATE_SPEED);
+                trailmap[i][j] = min(diffuseAndEvaporatedValue, 127);
+            if (trailmap[i][j] > 0 && trailmap[i][j] <= 127) {
+                toDisplay[(j / 8) * 128 + (i % 128)] |= (1 << (j % 8));                    
+            }
+            // else if (trailmap[i][j] <= 0){
+            //     toDisplay[(j / 8) * 128 + (i % 128)] ^= (1 << (j % 8));                    
+
+            // }
+            }
+        }
+
+}
+
+void processTrailMap() {
+    
 }
