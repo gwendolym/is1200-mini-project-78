@@ -80,7 +80,10 @@ void randomTimer();
 #define EVAPORATE_SPEED 2
 
 typedef struct Highscore {
-    char name[3];
+    char name0;
+    char name1;
+    char name2;
+
     int score;
 } Highscore;
 
@@ -127,11 +130,19 @@ struct Player {
     Point direction;
     
 };
+
+struct Fruit {
+    Point positionInt;
+    
+};
 void drawPlayer(struct Player *player);
 void initPlayerNormal(struct Player *player);
 void updatePlayerNormal(struct Player *player);
 void initPlayerEndless(struct Player *player);
 void updatePlayerEndless(struct Player *player);
+void drawFruit(struct Fruit *fruit);
+void initFruit(struct Fruit *fruit);
+void updateFruit(struct Fruit *fruit, struct Player *player);
 double randomDouble (int n);
 double min(double a, double b);
 double max (double a, double b);
@@ -160,3 +171,5 @@ void sw2Disable();
 void sw1Disable();
 void quicksleep(int cyc);
 int gameEndCount;
+int currentScore;
+int power(int x, int n);

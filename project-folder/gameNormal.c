@@ -10,11 +10,16 @@
 struct Enemy enemy1;
 struct Enemy enemies[5];
 struct Player player;
+struct Fruit fruit;
+
+
+
 
 // uint8_t evaporateSpeed = 64;
 
 void gameLoopNorm (void) {
     setupGame();
+    currentScore = 0;
     int i = 0;
     for (i = 0; i < 512; i++)
     {
@@ -41,8 +46,8 @@ void gameLoopNorm (void) {
        initEnemy(&(enemies[l]));
     }
     initPlayerNormal(&player);
-
-
+    initFruit(&fruit);
+    drawFruit(&fruit);
 
     while(gameState == NORMALGAME) {
         updateNormal();
@@ -60,10 +65,12 @@ void updateNormal() {
             updateEnemy(&(enemies[i]));
         }
         updatePlayerNormal(&player);
+        updateFruit(&fruit, &player);
         
         // updateEnemy(&enemy1);
         drawEnemy();
         drawPlayer(&player);
+        drawFruit(&fruit);
         // toDisplay[0]++;
         calculateNextOn = 0;
     }

@@ -350,19 +350,19 @@ void user_isr( void )
 }
 
 
-// double pow(double x, int n) {
-//     double res = x;
-//     if (n == 0)
-//     {
-//         return 1;
-//     }
-//     int i;
-//     for (i = 1; i < n; i++)
-//     {
-//         res *= x;
-//     }
-//     return res;
-// }
+int power(int x, int n) {
+    double res = x;
+    if (n == 0)
+    {
+        return 1;
+    }
+    int i;
+    for (i = 1; i < n; i++)
+    {
+        res *= x;
+    }
+    return res;
+}
 // int fact(int x) {
 //     if (x == 0)
 //     {
