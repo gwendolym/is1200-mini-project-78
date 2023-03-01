@@ -149,3 +149,14 @@ int mytime;
 void display_string(int line, char *s);
 void display_update_text(void);
 Highscore highscores[3];
+
+void sw4Enable();
+void sw3Enable();
+void sw2Enable();
+void sw1Enable();
+void sw4Disable();
+void sw3Disable();
+void sw2Disable();
+void sw1Disable();
+void quicksleep(int cyc);
+int gameEndCount;

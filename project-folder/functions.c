@@ -328,7 +328,7 @@ void runGame() {
 volatile int calculateNextOn;
 void user_isr( void )
 {
-    if (((IFS(0) & 0x100) != 0 ) & (gameState == ENDLESSMODE)) {
+    if (((IFS(0) & 0x100) != 0 ) && (gameState == ENDLESSMODE)) {
         IFSCLR(0) = 0x100;
         while (calculateNextOn);
         display_update();
@@ -336,11 +336,15 @@ void user_isr( void )
         calculateNextOn = 1;
     }
     
-    if (((IFS(0) & 0x100) != 0 ) & (gameState == NORMALGAME)) {
+        if (((IFS(0) & 0x100) != 0 ) && (gameState == NORMALGAME)) {
         IFSCLR(0) = 0x100;
         while (calculateNextOn);
         display_update();
         calculateNextOn = 1;
+    }
+    if (((IFS(0) & 0x100) != 0 ) && ((gameState == GAMEENDEND) || (gameState == GAMEENDNORM))) {
+        IFSCLR(0) = 0x100;
+        gameEndCount++;
     }
 
 }

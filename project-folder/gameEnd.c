@@ -10,20 +10,47 @@ uint8_t endPicture[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 void gameEndEndless() {
     int i;
     for (i = 0; i < 512; i++) {toDisplay[i] = endPicture[i];}
-
     display_update();
+    gameEndCount = 0;
 
-    if (pressBt()) {
+    setupGame();
+    volatile int pressBut = (volatile) pressBt();
+    while (1)
+    {
+    
+    if ((pressBt() & 1) && (gameEndCount > 10)) {
         gameState = HIGHSCOREEND;
     }
+    if (gameState != GAMEENDEND)
+    {
+        return;
+    }
+    }
+    
+    
+    
 }
+
+
 void gameEndNorm() {
     int i;
     for (i = 0; i < 512; i++) {toDisplay[i] = endPicture[i];}
 
     display_update();
+    gameEndCount = 0;
 
-    if (pressBt()) {
+    setupGame();
+    volatile int pressBut = (volatile) pressBt();
+    while (1)
+    {
+    
+    if ((pressBt() & 1) && (gameEndCount > 10)) {
         gameState = HIGHSCORENORM;
+    }
+
+    if (gameState != GAMEENDNORM)
+    {
+        return;
+    }
     }
 }
