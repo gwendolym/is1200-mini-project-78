@@ -15,6 +15,7 @@ void gameLoopEndless (void) {
     {
         toDisplay[i] = 0;
     }
+    *pMyTime = 0;
     int j, k;
     for (j = 0; j < 128; j++)
     {
@@ -26,7 +27,6 @@ void gameLoopEndless (void) {
     }
     int l;
     
-
     display_update();
     calculateNextOn == 1;
     // initEnemy(&enemy1);

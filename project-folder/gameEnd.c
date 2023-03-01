@@ -21,8 +21,7 @@ void gameEndEndless() {
     if ((pressBt() & 1) && (gameEndCount > 10)) {
         gameState = HIGHSCOREEND;
     }
-    if (gameState != GAMEENDEND)
-    {
+    if (gameState != GAMEENDEND) {
         return;
     }
     }

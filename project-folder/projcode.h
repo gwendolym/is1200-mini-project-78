@@ -142,7 +142,7 @@ void initPlayerEndless(struct Player *player);
 void updatePlayerEndless(struct Player *player);
 void drawFruit(struct Fruit *fruit);
 void initFruit(struct Fruit *fruit);
-void updateFruit(struct Fruit *fruit, struct Player *player);
+void updateFruit(struct Fruit *fruit, struct Player *player, int score);
 double randomDouble (int n);
 double min(double a, double b);
 double max (double a, double b);
@@ -155,6 +155,8 @@ void clearDisplay();
 void tick( unsigned int * timep );
 void time2string( char *, int );
 int mytime;
+int* pMyTime;
+
 
 
 void display_string(int line, char *s);
@@ -173,3 +175,4 @@ void quicksleep(int cyc);
 int gameEndCount;
 int currentScore;
 int power(int x, int n);
+void setHighscore(struct Highscore *highscore, char *name, int *score);

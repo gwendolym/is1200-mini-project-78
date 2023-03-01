@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <pic32mx.h>
 #include "projcode.h"
-
 int main (void) {
             /*
 	  This will set the peripheral bus clock to the same frequency

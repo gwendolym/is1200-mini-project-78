@@ -5,6 +5,8 @@
 
 #include <stdlib.h>
 
+const uint8_t const tooLow[512] = {0,0,0,0,0,134,8,56,8,134,0,28,162,162,28,0,158,32,32,158,0,190,138,154,164,0,0,0,164,170,170,18,128,156,162,162,148,0,28,34,34,156,128,62,10,154,36,0,190,42,42,34,128,128,128,190,144,8,144,62,0,188,10,138,188,128,164,42,42,18,128,0,0,2,2,190,130,130,128,28,34,162,156,0,28,162,162,156,0,0,128,190,160,160,32,128,156,162,34,28,128,190,144,8,16,62,128,128,0,2,2,190,130,2,0,156,162,162,28,0,128,128,128,0,0,0,0,0,0,0,0,0,0,15,1,2,1,15,0,15,2,2,15,0,15,2,5,8,0,15,10,10,8,0,0,0,8,15,8,0,0,0,15,0,0,0,0,0,7,8,8,7,0,15,1,2,15,0,0,0,0,0,15,0,0,0,15,2,2,15,0,15,10,10,8,0,0,0,15,8,8,8,0,15,10,10,8,0,15,2,2,15,0,15,8,8,7,0,15,10,10,8,0,15,2,6,9,0,15,10,10,5,0,7,8,8,7,0,15,2,2,15,0,15,2,6,9,0,15,8,8,7,0,0,0,0,0,0,0,0,0,129,65,95,1,1,64,223,69,13,210,0,3,4,220,4,195,64,64,64,30,5,5,222,0,14,209,21,204,64,94,133,5,94,64,81,159,17,0,31,130,68,95,64,1,213,5,6,0,192,0,146,85,85,137,0,31,8,4,8,31,0,18,31,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,5,3,0,4,7,4,0,0,3,4,3,0,0,7,5,5,4,0,0,0,3,4,4,3,0,7,1,1,0,0,0,5,1,1,0,0,0,4,5,5,2,0,7,2,1,2,7,0,4,6,5,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 
 void display_char(char c, int line, int row) {
     
@@ -28,12 +30,12 @@ void display_strings(char* string, int line) {
     
 }
 
-void setHighscore(struct Highscore *highscore, char *name, int score) {
+void setHighscore(struct Highscore *highscore, char *name, int* score) {
     highscore->name0 = *(name++);
     highscore->name1 = *(name++);
     highscore->name2 = *(name);
 
-    highscore->score = score;
+    highscore->score = *score;
 }
 
 void display_highscore_end(struct Highscore *highscore, int line, int place) {
@@ -62,10 +64,18 @@ void display_highscore_norm(struct Highscore *highscore, int line, int place) {
     char string[16];
     char score[6];
     int j;
-    for (j = 5; j = 0; j--)
-    {
-        score[j] = 48 + j;//hexasc(highscore->score % 10);
+    int arr[6];
+    
+ 
+    int count = 0;    
+    int n = highscore->score;
+
+    while (n != 0){
+        arr[count] = n % 10;
+        n /= 10;
+        count++;
     }
+    
     
     string[0] = hexasc(place);
     string[1] = '.';
@@ -77,16 +87,51 @@ void display_highscore_norm(struct Highscore *highscore, int line, int place) {
     string[7] = ' ';
     string[8] = ' ';
     int i;
-    int bigger = 0;
-    for (i = 0; i < 6; i++)
-    {
-        string[9+i] = - bigger *(power(10,5-i)) + (highscore->score / power(10, 5-i)) + 48; 
-        bigger = highscore->score / power(10, 5-i);
-    }
+    string[9] = hexasc(arr[5]);
+    string[10] = hexasc(arr[4]);
+    string[11] = hexasc(arr[3]);
+    string[12] = hexasc(arr[2]);
+    string[13] = hexasc(arr[1]);
+    string[14] = hexasc(arr[0]);
+
     
 
     display_strings(string, line);
 }
+
+void insertHighscore() {
+    char name[3] = {65, 65, 65};
+    int i = 0;
+    calculateNextOn == 1;
+    
+    while (i < 3) {
+        if (calculateNextOn == 1)
+        {
+            volatile int pressBut = (volatile int) pressBt();
+            if ((pressBut & 0x8) && (name[i] < 90))
+                name[i]++;
+            if ((pressBut & 0x8) && (name[i] == 90))
+                name[i] = 65;    
+            if ((pressBut & 0x4) && (name[i] > 65))
+                name[i]--;
+            if ((pressBut & 0x4) && (name[i] == 65))
+                name[i] = 90;
+            if (pressBut & 0x2)
+                i++; 
+            
+            setHighscore(&highscores[0], name, pMyTime);
+            display_strings("---Highscores---", 0);
+            display_highscore_end(&highscores[0], 1, 1);
+            display_highscore_end(&highscores[1], 2, 2);
+            display_highscore_end(&highscores[2], 3, 3);
+            calculateNextOn = 0;
+        }
+    }
+
+    
+    
+}
+
 
 void highScoreEnd() {
     int i;
@@ -95,15 +140,56 @@ void highScoreEnd() {
     {
         toDisplay[i] = 0;
     }
+
+    setupGame();
+    insertHighscore();
     // display_strings("AHello", 0);
     // display_strings("BAHello", 1);
     // display_strings("CBAHello", 2);
 
     // display_strings("DCBAHello", 3);
-    setHighscore(&highscores[0], "HAN", 0x1234);
-    display_highscore_norm(&highscores[0], 1, 1);
+    
+    // if (*pMyTime > getScore(&highscores[2]))
+    // {
+    //     setHighscore(&highscores[2], "HAN", pMyTime);
+    //     if(*pMyTime > getScore(&highscores[1])) {
+    //         struct Highscore temp = highscores[1];
+    //         highscores[1] = highscores[2];
+    //         highscores[2] = temp; 
+        
+    //         if (*pMyTime > getScore(&highscores[0]))
+    //         {
+    //             struct Highscore temp = highscores[0];
+    //                 highscores[0] = highscores[1];
+    //                 highscores[1] = temp; 
+    //             // char name[3] = {highscores[1].name0, highscores[1].name1, highscores[1].name2};
 
+    //             // setHighscore(&highscores[2], name, &(highscores[1].score));
+    //             // char name1[3] = {highscores[0].name0, highscores[0].name1, highscores[0].name2};
+    //             // setHighscore(&highscores[1], name1, &(highscores[0].score));
+    //         }
+    //     }
+
+    // }
+    // else {
+    //     int i;
+    //     for (i = 0; i < 512; i++)
+    //     {
+    //         toDisplay[i] = tooLow[i];
+    //     }
+        
+    // }
+
+        display_strings("---Highscores---", 0);
+        display_highscore_end(&highscores[0], 1, 1);
+        display_highscore_end(&highscores[1], 2, 2);
+        display_highscore_end(&highscores[2], 3, 3);
+
+    
     display_update();
+}
+int getScore (struct Highscore *highscore) {
+    return highscore->score;
 }
 
 void highScoreNorm() {
@@ -118,8 +204,9 @@ void highScoreNorm() {
     // display_strings("CBAHello", 2);
 
     // display_strings("DCBAHello", 3);
-    setHighscore(&highscores[0], "HAN", 123456);
+    setHighscore(&highscores[0], "HAN", &currentScore);
     display_highscore_norm(&highscores[0], 1, 1);
 
     display_update();
 }
+

@@ -235,18 +235,19 @@ void setupGame() {
     IEC(0) = 0x100;
     
     T2CONSET = 0x8000; //start timer igore all other bits 1000 0000 0000 0000
-    mytime = 0;
     enable_interrupt();
 }
 int timeout = 0;
-
+int highscore = 0x0000;
 void gameStart() {
     int i = 0;
     for (i = 0; i < 512; i++) {toDisplay[i] = startPicture[i];}
     setupGame();
-    highscores[0].score = 0;
-    highscores[1].score = 0;
-    highscores[2].score = 0;
+    setHighscore(&highscores[0], "A--", &highscore);
+    setHighscore(&highscores[1], "B--", &highscore);
+    setHighscore(&highscores[2], "C--", &highscore);
+
+
 
 
     display_update();
@@ -326,14 +327,24 @@ void runGame() {
 // }
 
 volatile int calculateNextOn;
+int timeoutcount = 0;
+int mytime = 0;
+
+int* pMyTime = &mytime;
 void user_isr( void )
 {
     if (((IFS(0) & 0x100) != 0 ) && (gameState == ENDLESSMODE)) {
         IFSCLR(0) = 0x100;
         while (calculateNextOn);
         display_update();
-        tick(&mytime);
+        timeoutcount++;
         calculateNextOn = 1;
+        if (timeoutcount == 10)
+        {
+            timeoutcount = 0;
+            tick(&mytime);
+        }
+        
     }
     
         if (((IFS(0) & 0x100) != 0 ) && (gameState == NORMALGAME)) {
@@ -345,6 +356,12 @@ void user_isr( void )
     if (((IFS(0) & 0x100) != 0 ) && ((gameState == GAMEENDEND) || (gameState == GAMEENDNORM))) {
         IFSCLR(0) = 0x100;
         gameEndCount++;
+    }
+     if (((IFS(0) & 0x100) != 0 ) && ((gameState == HIGHSCOREEND) || (gameState == HIGHSCORENORM))) {
+        IFSCLR(0) = 0x100;
+        while (calculateNextOn);
+        display_update();
+        calculateNextOn = 1;
     }
 
 }

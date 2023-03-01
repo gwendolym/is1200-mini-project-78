@@ -43,7 +43,7 @@ void gameLoopNorm (void) {
     drawEnemy();
     for (l = 0; l < 5; l++)
     {
-       initEnemy(&(enemies[l]));
+        initEnemy(&(enemies[l]));
     }
     initPlayerNormal(&player);
     initFruit(&fruit);
@@ -65,7 +65,7 @@ void updateNormal() {
             updateEnemy(&(enemies[i]));
         }
         updatePlayerNormal(&player);
-        updateFruit(&fruit, &player);
+        updateFruit(&fruit, &player, currentScore);
         
         // updateEnemy(&enemy1);
         drawEnemy();
