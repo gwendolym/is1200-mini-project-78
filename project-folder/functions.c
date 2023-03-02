@@ -240,7 +240,7 @@ void setupGame() {
 }
 int timeout = 0;
 int highscore = 0;
-int highscore1 = 1;
+int highscore1 = 0;
 void gameStart() {
     int i = 0;
     for (i = 0; i < 512; i++) {toDisplay[i] = startPicture[i];}

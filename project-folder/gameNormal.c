@@ -14,10 +14,12 @@ struct Fruit fruit;
 
 
 // uint8_t evaporateSpeed = 64;
-
+int gameScore;
 void gameLoopNorm (void) {
     setupGame();
-    *pcurrentSc = 0;
+
+
+    gameScore = 0;
     int i = 0;
     for (i = 0; i < 512; i++)
     {
@@ -63,7 +65,7 @@ void updateNormal() {
             updateEnemy(&(enemies[i]));
         }
         updatePlayerNormal(&player);
-        updateFruit(&fruit, &player);
+        updateFruit(&fruit, &player, &gameScore);
         
         // updateEnemy(&enemy1);
         drawEnemy();

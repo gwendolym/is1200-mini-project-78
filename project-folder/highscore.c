@@ -72,13 +72,26 @@ void display_highscore_norm(struct Highscore *highscore, int line, int place) {
     int count = 0;    
     int n = highscore->score;//highscore->score;
 
-  
-    int i=0;
-    while(n>0){
+    if  (n < 10) {
+        int i;
+        for (i = 1; i < 6; i++)
+        {
+            arr[i] = 0;
+        }
+        arr[0] = n;
+        
+    }
+    else
+    {
+        int i=0;
+        while(n>0){
         arr[i] = n % 10;
         n = n/10;
         i++;
     }
+    }
+    
+    
     
     
     string[0] = hexasc(place);
@@ -93,9 +106,9 @@ void display_highscore_norm(struct Highscore *highscore, int line, int place) {
     string[9] = ' ';
     string[10] = ' ';
     string[11] = ' ';
-    string[12] = hexasc(arr[2]);
-    string[13] = hexasc(arr[1]);
-    string[14] = hexasc(arr[0]);
+    string[12] = arr[2] + 48;
+    string[13] = arr[1] + 48;
+    string[14] = arr[0] + 48;
     string[15] = ' ';
 
     
@@ -159,8 +172,7 @@ void insertHighscoreNORM(int line) {
             if (pressBut & 0x2) {
                 pos++; 
                 }
-            
-            setHighscore(&highscoresNORM[line], name, &currentScore);
+            setHighscore(&highscoresNORM[line], name, &gameScore);
             display_strings("---Highscores---", 0);
             display_highscore_norm(&highscoresNORM[0], 1, 1);
             display_highscore_norm(&highscoresNORM[1], 2, 2);
@@ -244,7 +256,7 @@ void highScoreNorm() {
     }
 
     setupGame();
-    if (currentScore > getScore(&highscoresNORM[0]))
+    if (gameScore > getScore(&highscoresNORM[0]))
     {
         highscoresNORM[2] = highscoresNORM[1];
         highscoresNORM[1] = highscoresNORM[0];
@@ -252,7 +264,7 @@ void highScoreNorm() {
         return;
     }
     else {
-        if (currentScore > getScore(&highscoresNORM[1]))
+        if (gameScore > getScore(&highscoresNORM[1]))
         {
         highscoresNORM[2] = highscoresNORM[1];
         insertHighscoreNORM(1);
@@ -260,7 +272,7 @@ void highScoreNorm() {
         }
         else
         {
-            if (currentScore > getScore(&highscoresNORM[0]))
+            if (gameScore > getScore(&highscoresNORM[0]))
             {
                 insertHighscoreNORM(2);
                 return;
