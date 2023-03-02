@@ -176,3 +176,5 @@ int gameEndCount;
 int currentScore;
 int power(int x, int n);
 void setHighscore(struct Highscore *highscore, char *name, int *score);
+volatile int highSCount;
+volatile int canReturn;

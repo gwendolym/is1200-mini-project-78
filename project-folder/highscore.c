@@ -99,27 +99,28 @@ void display_highscore_norm(struct Highscore *highscore, int line, int place) {
     display_strings(string, line);
 }
 
-void insertHighscore() {
+void insertHighscore(int line) {
     char name[3] = {65, 65, 65};
-    int i = 0;
+    int pos = 0;
     calculateNextOn == 1;
     
-    while (i < 3) {
+    while (pos < 3) {
         if (calculateNextOn == 1)
         {
             volatile int pressBut = (volatile int) pressBt();
-            if ((pressBut & 0x8) && (name[i] < 90))
-                name[i]++;
-            if ((pressBut & 0x8) && (name[i] == 90))
-                name[i] = 65;    
-            if ((pressBut & 0x4) && (name[i] > 65))
-                name[i]--;
-            if ((pressBut & 0x4) && (name[i] == 65))
-                name[i] = 90;
-            if (pressBut & 0x2)
-                i++; 
+            if ((pressBut & 0x8) && (name[pos] < 91))
+                name[pos]++;
+            if ((pressBut & 0x8) && (name[pos] == 91))
+                name[pos] = 65;    
+            if ((pressBut & 0x4) && (name[pos] > 65))
+                name[pos]--;
+            if ((pressBut & 0x4) && (name[pos] == 65))
+                name[pos] = 90;
+            if (pressBut & 0x2) {
+                pos++; 
+                }
             
-            setHighscore(&highscores[0], name, pMyTime);
+            setHighscore(&highscores[line], name, pMyTime);
             display_strings("---Highscores---", 0);
             display_highscore_end(&highscores[0], 1, 1);
             display_highscore_end(&highscores[1], 2, 2);
@@ -127,9 +128,12 @@ void insertHighscore() {
             calculateNextOn = 0;
         }
     }
+     
 
-    
-    
+gameState = MODESELECT;
+display_update();
+return;
+
 }
 
 
@@ -142,48 +146,47 @@ void highScoreEnd() {
     }
 
     setupGame();
-    insertHighscore();
-    // display_strings("AHello", 0);
-    // display_strings("BAHello", 1);
-    // display_strings("CBAHello", 2);
+    if (*pMyTime > getScore(&highscores[0]))
+    {
+        highscores[2] = highscores[1];
+        highscores[1] = highscores[0];
+        insertHighscore(0);
+        return;
+    }
+    else {
+        if (*pMyTime > getScore(&highscores[1]))
+        {
+        highscores[2] = highscores[1];
+        insertHighscore(1);
+        return;
+        }
+        else
+        {
+            if (*pMyTime > getScore(&highscores[0]))
+            {
+                insertHighscore(2);
+                return;
+            }
+            else
+            {
+                int i;
+                for (i = 0; i < 512; i++)
+                {
+                    toDisplay[i] = tooLow[i];
+                }
+                gameState = MODESELECT;
+                return;
 
-    // display_strings("DCBAHello", 3);
-    
-    // if (*pMyTime > getScore(&highscores[2]))
-    // {
-    //     setHighscore(&highscores[2], "HAN", pMyTime);
-    //     if(*pMyTime > getScore(&highscores[1])) {
-    //         struct Highscore temp = highscores[1];
-    //         highscores[1] = highscores[2];
-    //         highscores[2] = temp; 
+            }
+            
+        }
         
-    //         if (*pMyTime > getScore(&highscores[0]))
-    //         {
-    //             struct Highscore temp = highscores[0];
-    //                 highscores[0] = highscores[1];
-    //                 highscores[1] = temp; 
-    //             // char name[3] = {highscores[1].name0, highscores[1].name1, highscores[1].name2};
+    }
 
-    //             // setHighscore(&highscores[2], name, &(highscores[1].score));
-    //             // char name1[3] = {highscores[0].name0, highscores[0].name1, highscores[0].name2};
-    //             // setHighscore(&highscores[1], name1, &(highscores[0].score));
-    //         }
-    //     }
+    highSCount = 0;
+    canReturn = 0;
+    while (!canReturn);
 
-    // }
-    // else {
-    //     int i;
-    //     for (i = 0; i < 512; i++)
-    //     {
-    //         toDisplay[i] = tooLow[i];
-    //     }
-        
-    // }
-
-        display_strings("---Highscores---", 0);
-        display_highscore_end(&highscores[0], 1, 1);
-        display_highscore_end(&highscores[1], 2, 2);
-        display_highscore_end(&highscores[2], 3, 3);
 
     
     display_update();

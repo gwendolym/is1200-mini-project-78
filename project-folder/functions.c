@@ -269,6 +269,12 @@ void modeSelect () {
         for (i = 0; i < 512; i++) {toDisplay[i] = gameModeSelect[i];}
         setupGame();
         display_update();
+
+        highSCount =0;
+        canReturn = 0;
+        while (!canReturn);
+        while(1) {
+
         volatile int press = pressBt();
         if (press & 0x1) {
             gameState = NORMALGAME;
@@ -279,7 +285,7 @@ void modeSelect () {
             gameState = ENDLESSMODE;
             return;
         }
-    
+        }
     
 }
 
@@ -359,9 +365,24 @@ void user_isr( void )
     }
      if (((IFS(0) & 0x100) != 0 ) && ((gameState == HIGHSCOREEND) || (gameState == HIGHSCORENORM))) {
         IFSCLR(0) = 0x100;
+        highSCount++;
+        if (highSCount == 10)
+        {
+            canReturn = 1;
+        }
+        
         while (calculateNextOn);
         display_update();
         calculateNextOn = 1;
+    }
+    if (((IFS(0) & 0x100) != 0 ) && (gameState == MODESELECT)) {
+        IFSCLR(0) = 0x100;
+        highSCount++;
+        if (highSCount == 10)
+        {
+            canReturn = 1;
+        }
+        
     }
 
 }

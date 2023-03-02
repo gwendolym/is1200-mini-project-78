@@ -10,6 +10,7 @@ struct Player player;
 
 void gameLoopEndless (void) {
     setupGame();
+    evaporateSpeed = 64;
     int i = 0;
     for (i = 0; i < 512; i++)
     {
