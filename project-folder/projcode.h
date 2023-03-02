@@ -11,6 +11,7 @@
 #define GAMEENDNORM (5)
 #define HIGHSCOREEND (6)
 #define HIGHSCORENORM (7)
+#define HIGHSCORES (8)
 
 
 #define DISPLAY_CHANGE_TO_COMMAND_MODE (PORTFCLR = 0x10)
@@ -56,6 +57,7 @@ void gameEndEndless();
 void gameEndNorm();
 void highScoreEnd();
 void highScoreNorm();
+void highscoreShow();
 
 void modeSelect(void);
 void updateEndless();
@@ -142,7 +144,7 @@ void initPlayerEndless(struct Player *player);
 void updatePlayerEndless(struct Player *player);
 void drawFruit(struct Fruit *fruit);
 void initFruit(struct Fruit *fruit);
-void updateFruit(struct Fruit *fruit, struct Player *player, int score);
+void updateFruit(struct Fruit *fruit, struct Player *player);
 double randomDouble (int n);
 double min(double a, double b);
 double max (double a, double b);
@@ -161,7 +163,8 @@ int* pMyTime;
 
 void display_string(int line, char *s);
 void display_update_text(void);
-Highscore highscores[3];
+struct Highscore highscoresEND[3];
+struct Highscore highscoresNORM[3];
 
 void sw4Enable();
 void sw3Enable();
@@ -174,6 +177,7 @@ void sw1Disable();
 void quicksleep(int cyc);
 int gameEndCount;
 int currentScore;
+int *pcurrentSc;
 int power(int x, int n);
 void setHighscore(struct Highscore *highscore, char *name, int *score);
 volatile int highSCount;

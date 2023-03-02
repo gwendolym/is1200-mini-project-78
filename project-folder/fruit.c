@@ -26,14 +26,14 @@ void initFruit(struct Fruit *fruit){
 
 }
 
-void updateFruit(struct Fruit *fruit, struct Player *player, int score){
+void updateFruit(struct Fruit *fruit, struct Player *player){
     
     
     if (fruitEaten(fruit, player))
     {
         initFruit(fruit);
         drawFruit(fruit);
-        score++;
+        (*pcurrentSc)++;
     }
     
     
