@@ -143,8 +143,7 @@ const uint8_t const font[] = {
 };
 
 
-volatile int* trisE = (volatile int) 0xbf886100; //
-volatile int portE = (volatile int) 0xbf886110; //stores which leds should be on
+
 
 uint8_t writeByte (uint8_t byte) {
 
@@ -158,13 +157,7 @@ uint8_t writeByte (uint8_t byte) {
     return SPI2BUF;
 }
 
-// void paintOnDisplay (uint8_t *map) {
-//     // paint every bit in map to display 
-//     for (int i = 0; i < 512; i++ ) {
-//         writeByte(map[i]);
-//     }
 
-// }
 void quicksleep(int cyc) {
 	int i;
 	for(i = cyc; i > 0; i--);
@@ -222,7 +215,7 @@ void display_update(void) {
 
 void setupGame() {
     // Timer with prescaling of 256, update 20 times per second 
-    T2CON = 0x70; //0111 0000 (111) meancurrnts prescale 256
+    T2CON = 0x70; //0111 0000 (111) means prescale 256
     TMR2 = 0; //start at 0
     PR2 = ((80000000/256)/10);  //prescale to 256 
 
@@ -239,19 +232,17 @@ void setupGame() {
     enable_interrupt();
 }
 int timeout = 0;
-int highscore = 0;
-int highscore1 = 0;
+int highscore = 0x0000;
 void gameStart() {
     int i = 0;
     for (i = 0; i < 512; i++) {toDisplay[i] = startPicture[i];}
     setupGame();
-    setHighscore(&highscoresEND[0], "---", &highscore);
-    setHighscore(&highscoresEND[1], "---", &highscore);
-    setHighscore(&highscoresEND[2], "---", &highscore);
-    setHighscore(&highscoresNORM[0], "---", &highscore1);
-    setHighscore(&highscoresNORM[1], "---", &highscore1);
-    setHighscore(&highscoresNORM[2], "---", &highscore1);
-
+    setHighscore(&highscores[0], "---", &highscore);
+    setHighscore(&highscores[1], "---", &highscore);
+    setHighscore(&highscores[2], "---", &highscore);
+    setHighscore(&highscoresNORM[0], "---", &highscore);
+    setHighscore(&highscoresNORM[1], "---", &highscore);
+    setHighscore(&highscoresNORM[2], "---", &highscore);
 
 
 
@@ -338,13 +329,7 @@ void runGame() {
 
 
 
-// void gameLoopEndless () {
-//         int i = 0;
-//     for (i = 0; i < 512; i++)
-//     {
-//         toDisplay[i] = 7;
-//     }
-// }
+
 
 volatile int calculateNextOn;
 int timeoutcount = 0;
@@ -415,34 +400,7 @@ int power(int x, int n) {
     }
     return res;
 }
-// int fact(int x) {
-//     if (x == 0)
-//     {
-//         return 1;
-//     }
-//     else
-//     {
-//         return (x * fact(x-1));
-//     }   
-// }
 
-// double sin(double x) {
-//     int n;
-//     double res = 0;
-//     for (n = 0; n < 10; n++)
-//     {
-//         pow(-1, n) / fact(2 * n + 1) * pow(x, 2 * n + 1);
-//     }
-// }
-// double cos(double x) {
-//     int n;
-//     double res = 0;
-//     for (n = 0; n < 10; n++)
-//     {
-//         pow(-1, n) / fact(2 * n) * pow(x, 2 * n);
-//     }
-    
-// }
 double sin(double x)
 {
     double res=0, pow=x, fact=1;
@@ -489,20 +447,6 @@ double max (double a, double b) {
     return b;
 }
 
-// uint8_t iMin(uint8_t a, uint8_t b) {
-//     if (a<b)
-//     {
-//         return a;
-//     }
-//     return b;
-// }
-// uint8_t iMax (uint8_t a, uint8_t b) {
-//     if (a>b)
-//     {
-//         return a;
-//     }
-//     return b;
-// }
     
 double lerp (double a, double b, double f) {
     return a * (1.0 - f) + (b * f);

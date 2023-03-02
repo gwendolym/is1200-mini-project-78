@@ -13,13 +13,17 @@ struct Player player;
 struct Fruit fruit;
 
 
+
+
 // uint8_t evaporateSpeed = 64;
+
 int gameScore;
+
+
 void gameLoopNorm (void) {
     setupGame();
+        gameScore = 0;
 
-
-    gameScore = 0;
     int i = 0;
     for (i = 0; i < 512; i++)
     {

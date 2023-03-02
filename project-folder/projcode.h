@@ -14,6 +14,7 @@
 #define HIGHSCORES (8)
 
 
+
 #define DISPLAY_CHANGE_TO_COMMAND_MODE (PORTFCLR = 0x10)
 #define DISPLAY_CHANGE_TO_DATA_MODE (PORTFSET = 0x10)
 
@@ -59,6 +60,7 @@ void highScoreEnd();
 void highScoreNorm();
 void highscoreShow();
 
+
 void modeSelect(void);
 void updateEndless();
 void updateNormal();
@@ -74,9 +76,9 @@ void randomTimer();
 #define CELL_HEIGHT 32
 #define MOVE_SPEED 1
 #define TURN_SPEED 0.25
-#define SENSOR_SIZE 4
-#define SENSOR_ANGLE_OFFSET 0.4
-#define SENSOR_OFFSET_DST 1
+#define SENSOR_SIZE 3
+#define SENSOR_ANGLE 0.4
+#define SENSOR_DST 2
 #define ENEMY_NUMBER 5
 #define DIFFUSE_SPEED 0.75
 #define EVAPORATE_SPEED 2
@@ -94,13 +96,13 @@ typedef struct Point {
     int y;
 } Point;
 
-typedef struct Point2D {
+typedef struct PointD {
     double x;
     double y;
-} Point2D;
+} PointD;
 
 struct Enemy {
-    Point2D positionDouble;
+    PointD positionDouble;
     Point positionInt;
     double angle;
     Point sensorForward;
@@ -144,7 +146,7 @@ void initPlayerEndless(struct Player *player);
 void updatePlayerEndless(struct Player *player);
 void drawFruit(struct Fruit *fruit);
 void initFruit(struct Fruit *fruit);
-void updateFruit(struct Fruit *fruit, struct Player *player, int *score);
+void updateFruit(struct Fruit *fruit, struct Player *player, int* score);
 double randomDouble (int n);
 double min(double a, double b);
 double max (double a, double b);
@@ -163,21 +165,15 @@ int* pMyTime;
 
 void display_string(int line, char *s);
 void display_update_text(void);
-struct Highscore highscoresEND[3];
+Highscore highscores[3];
 struct Highscore highscoresNORM[3];
 
-void sw4Enable();
-void sw3Enable();
-void sw2Enable();
-void sw1Enable();
-void sw4Disable();
-void sw3Disable();
-void sw2Disable();
-void sw1Disable();
+
 void quicksleep(int cyc);
 int gameEndCount;
 int currentScore;
 int *pcurrentSc;
+
 int power(int x, int n);
 void setHighscore(struct Highscore *highscore, char *name, int *score);
 volatile int highSCount;
