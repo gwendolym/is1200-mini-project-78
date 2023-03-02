@@ -60,6 +60,31 @@ void updatePlayerNormal(struct Player *player){
     {
         gameState = GAMEENDNORM;
     }
+    xPos--;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    yPos--;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    yPos--;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    xPos++;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
+    xPos++;
+    if (trailmap[xPos][yPos] != 0)
+    {
+        gameState = GAMEENDEND;
+    }
 
     
 }
