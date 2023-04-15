@@ -1,5 +1,7 @@
 This project contains a program to the game "Return of the Snakes"
 
+It counted as an advanced project.
+
 The project contains the following source files:
 
 main.c:
